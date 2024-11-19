@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers, viewsets, serializers
+from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import AllowAny
 
 from accounts.models import User
@@ -25,17 +26,18 @@ from accounts.models import User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        exclude= ("password",)
-class UserViewSet(viewsets.ModelViewSet):
+        fields="__all__"
+class UserCreateView(CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
 
-router = routers.DefaultRouter()
-router.register(r"users",UserViewSet)
+# router = routers.DefaultRouter()
+# router.register(r"users",UserViewSet)
 
 urlpatterns = [
-    path("api/",include(router.urls)),
+    # path("api/",include(router.urls)),
+    path("api/users/",UserCreateView.as_view()),
     path('admin/', admin.site.urls),
     path("api-auth",include("rest_framework.urls"))
 ]
