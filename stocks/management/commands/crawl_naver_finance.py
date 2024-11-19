@@ -6,5 +6,8 @@ from stocks.models import Stock
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        codes = [query.code for query in Stock.objects.all()]
-        crawling = NaverFinanceClass(codes)
+        queries = Stock.objects.all()
+        crawling = NaverFinanceClass()
+
+        price_list = [crawling.crawl(query) for query in queries]
+        print(price_list)
