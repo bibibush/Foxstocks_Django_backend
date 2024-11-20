@@ -19,18 +19,6 @@ class Stock(models.Model):
     def __str__(self):
         return self.name
 
-    def save(self,*args,**kwargs):
-        if not self.pk:
-            last_object = Stock.objects.last()
-            if last_object:
-                last_pk = last_object.pk
-                self.pk = last_pk + 1
-                super().save(*args,**kwargs)
-            else:
-                super().save(*args,**kwargs)
-        else:
-            super().save(*args,**kwargs)
-
 class DomesticStockManager(models.Manager):
 
     def get_queryset(self):

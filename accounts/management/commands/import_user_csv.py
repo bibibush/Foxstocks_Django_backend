@@ -7,7 +7,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         try:
             df = pd.read_csv("csv/accounts_user.csv", encoding="cp949")
-            df = df.drop("last_login",axis=1)
+            df = df.drop(["last_login","id"],axis=1)
             if "date_joined" in df.columns:
                 df["date_joined"] = pd.to_datetime(df["date_joined"])
 
