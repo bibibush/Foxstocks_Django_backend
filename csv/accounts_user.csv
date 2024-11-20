@@ -1,0 +1,2 @@
+"id","password","last_login","is_superuser","username","first_name","last_name","email","is_staff","is_active","date_joined"
+"1","pbkdf2_sha256$870000$6WsiRPCuB31FEGc1fKtFVN$AUhjPxqmeRZsy2qG/QwR/eSrk6cxcBxmpabggm6JG3U=",NULL,True,"admin","","","admin@admin.com",True,True,"2024-11-20 00:11:28.240364+00"

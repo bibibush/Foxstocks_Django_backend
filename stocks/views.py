@@ -20,10 +20,8 @@ class StockListView(APIView):
         stocks = Stock.objects.all()
         crawling = NaverFinanceClass()
 
+        serializer = StockSerializer(stocks, many=True)
         prices =[crawling.crawl(stock) for stock in stocks]
-        stocks_dics = [dict(vars(stock)) for stock in stocks]
-        for stock in stocks_dics:
-            del stock["_state"]
 
-        stock_data = [{**stock,"price":prices[index]} for index, stock in enumerate(stocks_dics)]
+        stock_data = [{**stock,"price":prices[index]} for index, stock in enumerate(serializer.data)]
         return Response(stock_data)

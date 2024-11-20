@@ -3,8 +3,16 @@ from django.db import models
 # Create your models here.
 
 class Stock(models.Model):
+    class StockColor(models.TextChoices):
+        SAMSUNG_E = ("#A6F7E2","삼성전자")
+        SK = ("#B79BFF","SK하이닉스")
+        LG = ("#FFE5A5","LG에너지솔루션")
+        SAMSUNG_B = ("#C7FFA5","삼성바이오로직스")
+        HYUNDAI = ("#F8A5FF","현대차")
+
     name = models.CharField(max_length=50)
     code = models.CharField(max_length=50)
+    color = models.CharField(max_length=50,choices=StockColor.choices, default=StockColor.SAMSUNG_E)
     is_domestic = models.BooleanField()
 
     def __str__(self):
