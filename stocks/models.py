@@ -1,4 +1,5 @@
-from django.db import models
+from django.db import models, IntegrityError
+
 
 # Create your models here.
 
@@ -17,6 +18,7 @@ class Stock(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class DomesticStockManager(models.Manager):
 
