@@ -11,11 +11,20 @@ class NaverFinanceClass:
             content = bsobj.find("div", {"id": "content"})
             no_today = content.find("p", {"class": "no_today"})
             em = no_today.find("em")
+
             price = em.find("span", {"class": "blind"}).text
+
+            no_exday = content.find("p",{"class":"no_exday"})
+            no_up = no_exday.find("em",{"class":"no_up"})
+            if no_up:
+                increased = no_up.find("span",{"class":"blind"}).text
+            else:
+                increased = None
+
         else:
             url = f"https://www.google.com/finance/quote/{query.code}"
             price = "0"
+            increased = None
 
 
-
-        return price
+        return {"price":price,"increased":increased}

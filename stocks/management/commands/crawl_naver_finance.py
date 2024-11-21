@@ -9,5 +9,5 @@ class Command(BaseCommand):
         queries = Stock.objects.all()
         crawling = NaverFinanceClass()
 
-        price_list = [crawling.crawl(query) for query in queries]
-        print(price_list)
+        for query in queries:
+            crawling.crawl(query)
