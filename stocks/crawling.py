@@ -21,9 +21,14 @@ class NaverFinanceClass:
             if no_up is not None:
                 increased = no_up.find("span",{"class":"blind"}).text
                 decreased = None
-            else:
+
+            elif no_down is not None:
                 increased = None
                 decreased = no_down.find("span",{"class":"blind"}).text
+
+            else:
+                increased = None
+                decreased = None
 
         else:
             url = f"https://www.google.com/finance/quote/{query.code}"
