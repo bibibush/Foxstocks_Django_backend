@@ -16,15 +16,19 @@ class NaverFinanceClass:
 
             no_exday = content.find("p",{"class":"no_exday"})
             no_up = no_exday.find("em",{"class":"no_up"})
-            if no_up:
+            no_down = no_exday.find("em",{"class":"no_down"})
+
+            if no_up is not None:
                 increased = no_up.find("span",{"class":"blind"}).text
+                decreased = None
             else:
                 increased = None
+                decreased = no_down.find("span",{"class":"blind"}).text
 
         else:
             url = f"https://www.google.com/finance/quote/{query.code}"
             price = "0"
             increased = None
+            decreased= None
 
-
-        return {"price":price,"increased":increased}
+        return {"price":price,"increased":increased,"decreased":decreased}

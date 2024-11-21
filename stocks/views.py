@@ -16,6 +16,7 @@ class StockViewSet(viewsets.ModelViewSet):
 
 class StockListView(APIView):
     permission_classes = [AllowAny]
+
     def get(self,request,format=None):
         stocks = Stock.objects.all()
         crawling = NaverFinanceClass()
