@@ -23,15 +23,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env("SECRET_KEY",default="django-insecure--ke3o_l8yf6n@d!wu7^8l2l92fp4x_u78qo4xl1ytws!%b3@em")
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool('DEBUG',default=False)
 
-if DEBUG is True:
-    ALLOWED_HOSTS = ['localhost','127.0.0.1']
-else:
-    ALLOWED_HOSTS = ["localhost"]
+ALLOWED_HOSTS = env("ALLOWED_HOSTS")
 # Application definition
 
 INSTALLED_APPS = [
@@ -84,11 +81,11 @@ AUTH_USER_MODEL = "accounts.User"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'HOST': "localhost",
-        "PORT": "5432",
-        'NAME': "mydb",
-        'USER': "bibu",
-        "PASSWORD": "bibu"
+        'HOST': env("HOST"),
+        "PORT": env("PORT"),
+        'NAME': env("NAME"),
+        'USER': env("USER"),
+        "PASSWORD": env("PASSWORD")
     }
 }
 
