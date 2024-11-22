@@ -10,6 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
+import environ
+
+env = environ.Env()
+env_file = '.env.prod' if os.getenv("DJANGO_PRODUCTION") == 'true' else '.env'
+env.read_env(env_file)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -18,15 +23,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure--ke3o_l8yf6n@d!wu7^8l2l92fp4x_u78qo4xl1ytws!%b3@em'
+SECRET_KEY = env("SECRET_KEY",default="django-insecure--ke3o_l8yf6n@d!wu7^8l2l92fp4x_u78qo4xl1ytws!%b3@em")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool('DEBUG',default=False)
 
 if DEBUG is True:
     ALLOWED_HOSTS = ['localhost','127.0.0.1']
 else:
-    ALLOWED_HOSTS = []
+    ALLOWED_HOSTS = ["localhost"]
 # Application definition
 
 INSTALLED_APPS = [
