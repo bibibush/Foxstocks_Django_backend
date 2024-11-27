@@ -1,6 +1,4 @@
 from django.http import JsonResponse
-from django.middleware.csrf import get_token
-from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import ensure_csrf_cookie
