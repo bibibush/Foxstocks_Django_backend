@@ -33,4 +33,5 @@ services:
       - "443:443"
     restart: always
     depends_on:
+      - db
       - django
