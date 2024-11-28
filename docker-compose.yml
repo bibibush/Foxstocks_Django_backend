@@ -1,6 +1,7 @@
 version: "3"
 services:
   db:
+    container_name: mydb
     image: postgres:latest
     restart: always
     ports:
@@ -20,6 +21,7 @@ services:
       - db
 
   nginx:
+    container_name: my-nginx
     image: nginx:latest
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
