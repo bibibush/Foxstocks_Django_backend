@@ -137,3 +137,6 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.DjangoModelPermissions"
     ]
 }
+
+if DEBUG is False:
+    CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS")
