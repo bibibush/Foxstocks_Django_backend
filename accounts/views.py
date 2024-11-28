@@ -9,4 +9,4 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 @method_decorator(ensure_csrf_cookie,name='dispatch')
 class CSRFEnsureView(View):
     def get(self,request, *args, **kwargs):
-        return JsonResponse(data={"result_message": "SUCESS"}, safe=True, status=200)
+        return JsonResponse(data={"result_message": "SUCESS","user":request.user.username if request.user else None}, safe=True, status=200)
