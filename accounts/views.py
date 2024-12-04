@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from accounts.models import User
+from accounts.serializers import UserSerializer
 
 
 # Create your views here.
@@ -19,9 +20,9 @@ class CSRFEnsureView(View):
 class CustomTokenObtainPairView(TokenObtainPairView):
     def post(self, request: Request, *args, **kwargs) -> Response:
         user_email = request.data.get("email")
-        data = dict(vars(User.objects.get(email=user_email)))
-        del data["_state"]
-        del data["password"]
+        query = User.objects.get(email=user_email)
+        serializer = UserSerializer(query)
+
         response = super().post(request,*args,**kwargs)
 
-        return Response({**response.data,**data})
+        return Response({**response.data,**serializer.data})
