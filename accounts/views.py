@@ -25,4 +25,4 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 
         response = super().post(request,*args,**kwargs)
 
-        return Response({**response.data,**serializer.data})
+        return Response({**response.data,"user":{**serializer.data}})
