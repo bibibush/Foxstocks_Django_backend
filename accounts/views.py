@@ -27,7 +27,7 @@ class UserCreationView(BaseCreateView):
         return JsonResponse({"responseMessage":"회원가입이 완료되었습니다."},safe=True,status=201)
 
     def form_invalid(self, form):
-        return JsonResponse({"errorMessage":"회원가입중 오류가 발생했습니다."},safe=True,status=400)
+        return JsonResponse({"errorMessage":"회원가입중 오류가 발생했습니다.","error":form.errors},safe=True,status=400)
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     def post(self, request: Request, *args, **kwargs) -> Response:
