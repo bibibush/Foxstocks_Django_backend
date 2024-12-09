@@ -11,6 +11,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Github Configure
+        run: |
+          git config --global url."https://${{secrets.ACCESS_TOKEN}}@github.com".insteadOf "https://github.com"
+
       - name: Connecting to ssh
         uses: appleboy/ssh-action@v1.2.0
         with:
