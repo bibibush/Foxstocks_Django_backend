@@ -19,7 +19,7 @@ from accounts.serializers import UserSerializer
 @method_decorator(ensure_csrf_cookie,name='dispatch')
 class CSRFEnsureView(View):
     def get(self,request, *args, **kwargs):
-        return JsonResponse(data={"result_message": "SUCCESS"}, safe=True, status=200)
+        return JsonResponse(data={"result_message": "성공(SUCCESS)"}, safe=True, status=200)
 
 class UserCreationView(BaseCreateView):
     form_class = MyUserCreationForm
