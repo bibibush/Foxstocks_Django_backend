@@ -1,8 +1,10 @@
+from django.contrib.auth import get_user_model
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.generic.edit import BaseCreateView
+from rest_framework.generics import RetrieveAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -28,6 +30,11 @@ class UserCreationView(BaseCreateView):
 
     def form_invalid(self, form):
         return JsonResponse({"errorMessage":"회원가입중 오류가 발생했습니다.","error":form.errors},safe=True,status=400)
+
+class MyProfileAPIView(RetrieveAPIView):
+    user = get_user_model()
+    queryset = user.objects.all()
+    serializer_class = UserSerializer
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     def post(self, request: Request, *args, **kwargs) -> Response:
