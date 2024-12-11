@@ -36,16 +36,18 @@ class UserCreationView(BaseCreateView):
 
 
 class MyProfileAPIView(RetrieveAPIView):
-    user = get_user_model()
-    queryset = user.objects.all()
     serializer_class = UserSerializer
 
+    def get_queryset(self):
+        user = get_user_model()
+        return user.objects.all()
+
     def get(self, request, *args, **kwargs):
-        response = super().get(request,*args,**kwargs)
-        pk = kwargs.get("pk")
-        invested_queryset = Invested.objects.filter(user__id=pk)
+        user = self.get_object()
+        invested_queryset = Invested.objects.filter(user=user)
         invested_serializer = InvestedSerializer(invested_queryset, many=True)
         invested_data = {"invests":invested_serializer.data}
+        response = super().get(request,*args,**kwargs)
 
         return Response({**response.data,**invested_data})
 
