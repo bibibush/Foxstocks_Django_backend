@@ -12,6 +12,8 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from accounts.form import MyUserCreationForm
 from accounts.models import User
 from accounts.serializers import UserSerializer
+from balance.models import Invested
+from balance.serializers import InvestedSerializer
 
 
 # Create your views here.
@@ -20,6 +22,7 @@ from accounts.serializers import UserSerializer
 class CSRFEnsureView(View):
     def get(self,request, *args, **kwargs):
         return JsonResponse(data={"result_message": "성공(SUCCESS)"}, safe=True, status=200)
+
 
 class UserCreationView(BaseCreateView):
     form_class = MyUserCreationForm
@@ -31,10 +34,21 @@ class UserCreationView(BaseCreateView):
     def form_invalid(self, form):
         return JsonResponse({"errorMessage":"회원가입중 오류가 발생했습니다.","error":form.errors},safe=True,status=400)
 
+
 class MyProfileAPIView(RetrieveAPIView):
     user = get_user_model()
     queryset = user.objects.all()
     serializer_class = UserSerializer
+
+    def get(self, request, *args, **kwargs):
+        response = super().get(request,*args,**kwargs)
+        pk = kwargs.get("pk")
+        invested_queryset = Invested.objects.filter(user__id=pk)
+        invested_serializer = InvestedSerializer(invested_queryset, many=True)
+        invested_data = {"invests":invested_serializer.data}
+
+        return Response({**response.data,**invested_data})
+
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     def post(self, request: Request, *args, **kwargs) -> Response:
