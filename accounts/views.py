@@ -42,12 +42,12 @@ class MyProfileAPIView(RetrieveAPIView):
         user = get_user_model()
         return user.objects.all()
 
-    def get(self, request, *args, **kwargs):
+    def retrieve(self, request, *args, **kwargs):
         user = self.get_object()
         invested_queryset = Invested.objects.filter(user=user)
         invested_serializer = InvestedSerializer(invested_queryset, many=True)
         invested_data = {"invests":invested_serializer.data}
-        response = super().get(request,*args,**kwargs)
+        response = super().retrieve(request,*args,**kwargs)
 
         return Response({**response.data,**invested_data})
 
