@@ -3,6 +3,8 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from balance.models import Invested
+from balance.serializers import InvestedSerializer
 from stocks.crawling import NaverFinanceClass
 from stocks.models import Stock
 from stocks.serializers import StockSerializer
@@ -18,11 +20,31 @@ class StockListView(APIView):
     permission_classes = [AllowAny]
 
     def get(self,request,format=None):
+        user_id = request.GET.get("user_id")
+        invests = Invested.objects.filter(user__id= user_id)
+
         stocks = Stock.objects.all()
         crawling = NaverFinanceClass()
 
         serializer = StockSerializer(stocks, many=True)
-        additional_data =[crawling.crawl(stock) for stock in stocks]
 
-        stock_data = [{**stock, **additional_data[index]} for index, stock in enumerate(serializer.data)]
-        return Response(stock_data)
+        if invests:
+            additional_data = []
+            for stock in stocks:
+                crawled_data = crawling.crawl(stock)
+                invest = invests.filter(company=stock).first()
+                if invest:
+                    invest.current_price = int(crawled_data["price"].replace(",",""))
+                    invest.save()
+
+                additional_data.append(crawled_data)
+
+            invests_serializer = InvestedSerializer(invests,many=True)
+            stock_data = [{**stock, **additional_data[index]} for index, stock in enumerate(serializer.data)]
+            response_data = {"data":stock_data,"invests":invests_serializer.data}
+        else:
+            additional_data = [crawling.crawl(stock) for stock in stocks]
+            stock_data = [{**stock, **additional_data[index]} for index, stock in enumerate(serializer.data)]
+            response_data = {"data": stock_data, "invests": []}
+
+        return Response(response_data)
