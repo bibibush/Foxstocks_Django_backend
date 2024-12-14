@@ -45,6 +45,6 @@ class StockListView(APIView):
         else:
             additional_data = [crawling.crawl(stock) for stock in stocks]
             stock_data = [{**stock, **additional_data[index]} for index, stock in enumerate(serializer.data)]
-            response_data = {"data": stock_data, "invests": []}
+            response_data = {"data": stock_data, "invests": None}
 
         return Response(response_data)
