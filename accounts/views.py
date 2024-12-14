@@ -12,9 +12,6 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from accounts.form import MyUserCreationForm
 from accounts.models import User
 from accounts.serializers import UserSerializer
-from balance.models import Invested
-from balance.serializers import InvestedSerializer
-
 
 # Create your views here.
 
@@ -41,15 +38,6 @@ class MyProfileAPIView(RetrieveAPIView):
     def get_queryset(self):
         user = get_user_model()
         return user.objects.all()
-
-    def retrieve(self, request, *args, **kwargs):
-        user = self.get_object()
-        invested_queryset = Invested.objects.filter(user=user)
-        invested_serializer = InvestedSerializer(invested_queryset, many=True)
-        invested_data = {"invests":invested_serializer.data}
-        response = super().retrieve(request,*args,**kwargs)
-
-        return Response({**response.data,**invested_data})
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
