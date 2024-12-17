@@ -39,6 +39,7 @@ class StockListView(APIView):
 
                 additional_data.append(crawled_data)
 
+            invests = Invested.objects.filter(user_id=user_id)
             invests_serializer = InvestedSerializer(invests,many=True)
             stock_data = [{**stock, **additional_data[index]} for index, stock in enumerate(serializer.data)]
             response_data = {"data":stock_data,"invests":invests_serializer.data}
