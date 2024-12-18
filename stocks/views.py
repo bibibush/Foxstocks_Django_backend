@@ -28,19 +28,20 @@ class StockListView(APIView):
 
         serializer = StockSerializer(stocks, many=True)
 
-        if invests:
+        if invests.exists():
             additional_data = []
+            updated_invests= []
             for stock in stocks:
                 crawled_data = crawling.crawl(stock)
                 invest = invests.filter(company=stock).first()
                 if invest:
                     invest.current_price = int(crawled_data["price"].replace(",",""))
-                    invest.save()
+                    updated_invests.append(invest)
 
                 additional_data.append(crawled_data)
 
-            invests = Invested.objects.filter(user_id=user_id)
-            invests_serializer = InvestedSerializer(invests,many=True)
+            Invested.objects.bulk_update(updated_invests,["current_price"])
+            invests_serializer = InvestedSerializer(updated_invests,many=True)
             stock_data = [{**stock, **additional_data[index]} for index, stock in enumerate(serializer.data)]
             response_data = {"data":stock_data,"invests":invests_serializer.data}
         else:
