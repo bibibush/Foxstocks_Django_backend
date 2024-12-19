@@ -76,6 +76,7 @@ class DataTableAPIView(APIView):
     def get(self,request,format=None):
         category = request.GET.get("category")
         extra_columns_name = request.GET.get("extra_columns_name")
+        extra_columns_name = extra_columns_name.split(",")
 
         crawling = NaverFinanceClass()
         data = crawling.crawl_data_table(category,*extra_columns_name)
