@@ -72,6 +72,7 @@ class ChartDataAPIView(APIView):
         return Response(response_data)
 
 class DataTableAPIView(APIView):
+    permission_classes = [AllowAny]
     def get(self,request,format=None):
         category = request.GET.get("category")
         extra_columns_name = request.GET.get("extra_columns_name")
