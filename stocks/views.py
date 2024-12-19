@@ -70,3 +70,15 @@ class ChartDataAPIView(APIView):
             raise ValidationError("frequency가 유효한 값이 아닙니다.")
 
         return Response(response_data)
+
+class DataTableAPIView(APIView):
+    permission_classes = [AllowAny]
+    def get(self,request,format=None):
+        category = request.GET.get("category")
+        extra_columns_name = request.GET.get("extra_columns_name")
+        extra_columns_name = extra_columns_name.split(",")
+
+        crawling = NaverFinanceClass()
+        data = crawling.crawl_data_table(category,*extra_columns_name)
+
+        return Response(data)
