@@ -58,7 +58,7 @@ class NaverFinanceClass:
                 response_dict = {
                     "name": tr.find("a",{"class":"tltle"}).text,
                     "current_price":tr.find_all("td",{"class":"number"})[2].text,
-                    "from_yesterday": tr.find_all("td",{"class":"number"})[3].find("span").text,
+                    "from_yesterday": tr.find_all("td",{"class":"number"})[3].find("span",recursive=False).text,
                     "increased_percent": tr.find_all("td",{"class":"number"})[4].find("span").text,
                     **args_dict
                 }
