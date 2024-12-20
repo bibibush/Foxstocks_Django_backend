@@ -50,18 +50,33 @@ class NaverFinanceClass:
 
         for tr in trs:
             if tr.find("td",{"class":"number"}):
-                args_dict = {
-                    arg: tr.find_all("td",{"class":"number"})[index + 5].text
-                    for index,arg in enumerate(args)
-                }
+                if category == "siselist_tab_0" or category == "siselist_tab_1":
+                    args_dict = {
+                        arg: tr.find_all("td",{"class":"number"})[index + 5].text
+                        for index,arg in enumerate(args)
+                    }
 
-                response_dict = {
-                    "name": tr.find("a",{"class":"tltle"}).text,
-                    "current_price":tr.find_all("td",{"class":"number"})[2].text,
-                    "from_yesterday": tr.find_all("td",{"class":"number"})[3].find("span",recursive=False).text,
-                    "increased_percent": tr.find_all("td",{"class":"number"})[4].find("span").text,
-                    **args_dict
-                }
+                    response_dict = {
+                        "name": tr.find("a", {"class": "tltle"}).text,
+                        "current_price": tr.find_all("td", {"class": "number"})[2].text,
+                        "from_yesterday": tr.find_all("td", {"class": "number"})[3].find("span", recursive=False).text,
+                        "increased_percent": tr.find_all("td", {"class": "number"})[4].find("span").text,
+                        **args_dict
+                    }
+                else:
+                    args_dict = {
+                        arg: tr.find_all("td",{"class":"number"})[index + 3].text
+                        for index,arg in enumerate(args)
+                    }
+
+                    response_dict = {
+                        "name": tr.find("a", {"class": "tltle"}).text,
+                        "current_price": tr.find_all("td", {"class": "number"})[0].text,
+                        "from_yesterday": tr.find_all("td", {"class": "number"})[1].find("span", recursive=False).text,
+                        "increased_percent": tr.find_all("td", {"class": "number"})[2].find("span").text,
+                        **args_dict
+                    }
+
                 response_data.append(response_dict)
 
         return {"columns":columns, "data":response_data,"total_count": len(trs)}
