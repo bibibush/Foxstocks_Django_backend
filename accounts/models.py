@@ -7,6 +7,7 @@ from django.utils.translation import gettext_lazy as _
 
 class User(AbstractUser):
     email = models.EmailField(_("email address"),unique=True)
+    profile_img = models.ImageField(upload_to="profile_img/", null=True)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username"]
