@@ -61,6 +61,7 @@ class ChangeUserAPIView(UpdateAPIView):
             user = self.get_object()
             if user.check_password(password1):
                 user.set_password(password2)
+                user.save()
             else:
                 return Response({"error":"forbidden"},status=status.HTTP_403_FORBIDDEN)
 
