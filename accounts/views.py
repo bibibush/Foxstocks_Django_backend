@@ -55,12 +55,17 @@ class ChangeUserAPIView(UpdateAPIView):
         return super().get_serializer(*args,**kwargs)
     
     def update(self, request, *args, **kwargs):
-        pk = kwargs.get("pk")
-        user_id = request.headers.get("User-Id")
-        if user_id is None or user_id != str(pk):
-            return Response({"error":"에러"},status=status.HTTP_403_FORBIDDEN)
-        else:
-            return super().update(request,*args,**kwargs)
+        password1 = request.data.get("password1")
+        password2 = request.data.get("password2")
+        if password1 is not None and password2 is not None:
+            user = self.get_object()
+            if user.check_password(password1):
+                user.set_password(password2)
+            else:
+                return Response({"error":"forbidden"},status=status.HTTP_403_FORBIDDEN)
+
+        return super().update(request,*args,**kwargs)
+
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     def post(self, request: Request, *args, **kwargs) -> Response:
