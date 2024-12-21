@@ -56,7 +56,7 @@ class ChangeUserAPIView(UpdateAPIView):
 
     def update(self, request, *args, **kwargs):
         pk = kwargs.get("pk")
-        user_id = request.headers.get("user-id")
+        user_id = request.headers.get("User_id")
         if user_id is None or user_id != pk:
             return Response({"error":"에러"},status=status.HTTP_403_FORBIDDEN)
         else:
