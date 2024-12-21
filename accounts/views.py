@@ -5,13 +5,15 @@ from django.views import View
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.generic.edit import BaseCreateView
 from rest_framework.generics import RetrieveAPIView, UpdateAPIView
+from rest_framework.parsers import MultiPartParser
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from accounts.form import MyUserCreationForm
 from accounts.models import User
-from accounts.serializers import UserSerializer
+from accounts.serializers import UserSerializer, UserChangeSerializer
+
 
 # Create your views here.
 
@@ -40,11 +42,16 @@ class MyProfileAPIView(RetrieveAPIView):
         return user.objects.all()
 
 class ChangeUserAPIView(UpdateAPIView):
-    serializer_class = UserSerializer
+    serializer_class = UserChangeSerializer
+    parser_classes = [MultiPartParser]
 
     def get_queryset(self):
         user = get_user_model()
         return user.objects.all()
+
+    def get_serializer(self, *args, **kwargs):
+        kwargs["partial"] = True
+        return super().get_serializer(*args,**kwargs)
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
