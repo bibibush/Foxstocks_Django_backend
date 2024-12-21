@@ -4,7 +4,7 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.generic.edit import BaseCreateView
-from rest_framework.generics import RetrieveAPIView
+from rest_framework.generics import RetrieveAPIView, UpdateAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -33,6 +33,13 @@ class UserCreationView(BaseCreateView):
 
 
 class MyProfileAPIView(RetrieveAPIView):
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        user = get_user_model()
+        return user.objects.all()
+
+class ChangeUserAPIView(UpdateAPIView):
     serializer_class = UserSerializer
 
     def get_queryset(self):
