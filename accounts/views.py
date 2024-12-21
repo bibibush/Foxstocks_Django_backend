@@ -4,6 +4,7 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.generic.edit import BaseCreateView
+from rest_framework import status
 from rest_framework.generics import RetrieveAPIView, UpdateAPIView
 from rest_framework.parsers import MultiPartParser
 from rest_framework.request import Request
@@ -52,6 +53,15 @@ class ChangeUserAPIView(UpdateAPIView):
     def get_serializer(self, *args, **kwargs):
         kwargs["partial"] = True
         return super().get_serializer(*args,**kwargs)
+
+    def update(self, request, *args, **kwargs):
+        pk = kwargs.get("pk")
+        user_id = request.headers.get("user-id")
+        if user_id is None or user_id != pk:
+            return Response({"error":"에러"},status=status.HTTP_403_FORBIDDEN)
+        else:
+            return super().update(request, *args, **kwargs)
+
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
