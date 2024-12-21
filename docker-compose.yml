@@ -17,6 +17,8 @@ services:
     restart: always
     ports:
       - "8000:8000"
+    volumes:
+      - ./media:/app/media/
     depends_on:
       - db
 
