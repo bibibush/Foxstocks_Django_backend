@@ -8,7 +8,7 @@ services:
       - "5432:5432"
     environment:
       POSTGRES_USER: bibu
-      POSTGRES_PASSWORD: asad941215
+      POSTGRES_PASSWORD: bibu
       POSTGRES_DB: mydb
 
   django:
