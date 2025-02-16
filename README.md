@@ -23,6 +23,7 @@
 * Beautifulsoup4
 * requests
 * gunicorn
+* Docker
 * aws ec2
 
 <br />
@@ -139,4 +140,38 @@ class StockSerializer(serializers.ModelSerializer):
 브라우저는 
 <img src="./staticfiles/스크린샷 2025-02-16 122825.png" alt="주식 데이터들" />
 이렇게 크롤링된 주식 데이터들을 보여줄 수 있습니다.
+</details>
+
+<br />
+
+<details>
+  <summary><b>사용자 투자 내역 모델 작성 (Meta 클래스를 사용해서 유니크 제약 구현)</b></summary>
+
+  먼저 Invested라는 모델을 작성했습니다.
+  ```python
+  class Invested(models.Model):
+    input = models.PositiveIntegerField()
+    initial_price = models.PositiveIntegerField()
+    current_price = models.PositiveIntegerField()
+    company = models.ForeignKey("stocks.Stock",on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["user","company"],name="accounts_invested_uniq")
+        ]
+    def __str__(self):
+        return f"{self.user.username} - {self.company}"
+```
+이 모델은 앞서 정의한 Stock모델과 User모델을 다대일 관계로 가집니다. User모델은 abstractUser클래스를 상속받아 재정의 했습니다.
+```python
+class User(AbstractUser):
+    email = models.EmailField(_("email address"),unique=True)
+    profile_img = models.ImageField(upload_to="profile_img/", null=True)
+
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["username"]
+
+    def __str__(self):
+        return self.email
+```
 </details>
