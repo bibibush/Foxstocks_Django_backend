@@ -136,5 +136,7 @@ class StockSerializer(serializers.ModelSerializer):
 <br />
 이제 시리얼라이저된 데이터와 크롤링 된 데이터를 합쳐서 데이터리스트 형태로 만들어 stock_data에 할당합니다. 그리고 브라우저에 {"data":stock_data} 형태로 데이터를 보내줍니다.
 
-브라우저는 ![주식 리스트](./staticfiles/스크린샷 2025-02-16 122825.png) 이렇게 크롤링된 주식 데이터들을 보여줄 수 있습니다.
+브라우저는 
+<img src="./staticfiles/스크린샷 2025-02-16 122825.png" alt="주식 데이터들" />
+이렇게 크롤링된 주식 데이터들을 보여줄 수 있습니다.
 </details>
